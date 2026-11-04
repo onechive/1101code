@@ -219,8 +219,8 @@
   <!-- Fullscreen Video Intro Overlay -->
   <div id="intro-overlay">
     <video id="intro-video" playsinline preload="auto">
-      <source src="../fbx/intro.mp4" type="video/mp4">
-      <source src="intro.mp4" type="video/mp4">
+      <source src="fbx/intro.mp4" type="video/mp4">
+      <source src="./fbx/intro.mp4" type="video/mp4">
     </video>
     <div class="intro-controls">
       <button id="intro-mute-btn" class="intro-btn" aria-label="Toggle Mute" title="음소거 토글">
@@ -291,20 +291,20 @@
      */
 
     const CONFIG = {
-      glbPath: '../fbx/cube1103+animation.glb',
-      altTexturePath: '../fbx/uv+ap.png',   // 마우스가 지나갈 때 드러나는 텍스처 (UV 배치 동일)
+      glbPath: 'fbx/cube1103+animation.glb',
+      altTexturePath: 'fbx/uv+ap.png',   // 마우스가 지나갈 때 드러나는 텍스처 (UV 배치 동일)
       altBrightness: 1.3,                   // uv+ap.png 밝기 배율
       // 정면에서 왼쪽 위 → 오른쪽 아래 순서(01~09)
       songs: [
-        '../fbx/01.Xtal.mp3',
-        '../fbx/02.Tha.mp3',
-        '../fbx/03.Pulsewidth.mp3',
-        '../fbx/04.Ageispolis.mp3',
-        '../fbx/05.I.mp3',
-        '../fbx/06.GreenCalx.mp3',
-        '../fbx/07.Wearethemusicmakers.mp3',
-        '../fbx/08.Hedphelym.mp3',
-        '../fbx/09.Actium.mp3'
+        'fbx/01.Xtal.mp3',
+        'fbx/02.Tha.mp3',
+        'fbx/03.Pulsewidth.mp3',
+        'fbx/04.Ageispolis.mp3',
+        'fbx/05.I.mp3',
+        'fbx/06.GreenCalx.mp3',
+        'fbx/07.Wearethemusicmakers.mp3',
+        'fbx/08.Hedphelym.mp3',
+        'fbx/09.Actium.mp3'
       ],
       snapDuration: 0.35,        // 90도 스냅 회전 애니메이션 시간 (초)
       snapEase: 'power2.out',    // GSAP 이징 커브
