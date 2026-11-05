@@ -670,7 +670,7 @@
       // 씬 생성
       scene = new THREE.Scene();
       scene.background = null;   // 투명 → body의 움직이는 그라데이션 배경이 보임
-      scene.fog = new THREE.FogExp2(0xffffff, 0.015);
+      scene.fog = null;          // 멀리서 보아도 화면이 뿌옇게 흐려지지 않도록 포그 비활성화
 
       // 카메라 설정 (사용자 큐브 크기에 최적화된 위치)
       camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 200);
@@ -1472,16 +1472,6 @@
         ease: 'sine.inOut',
         overwrite: 'auto'
       });
-      if (scene && scene.fog) {
-        gsap.to(scene.fog.color, {
-          r: track.bgColor.r,
-          g: track.bgColor.g,
-          b: track.bgColor.b,
-          duration: 1.5,
-          ease: 'sine.inOut',
-          overwrite: 'auto'
-        });
-      }
       document.documentElement.style.setProperty('--theme-color', track.textColor);
       document.documentElement.style.setProperty('--watermark-color', track.wmColor);
     }
@@ -1511,16 +1501,6 @@
         ease: 'sine.inOut',
         overwrite: 'auto'
       });
-      if (scene && scene.fog) {
-        gsap.to(scene.fog.color, {
-          r: DEFAULT_THEME.bgColor.r,
-          g: DEFAULT_THEME.bgColor.g,
-          b: DEFAULT_THEME.bgColor.b,
-          duration: 1.5,
-          ease: 'sine.inOut',
-          overwrite: 'auto'
-        });
-      }
       document.documentElement.style.setProperty('--theme-color', DEFAULT_THEME.textColor);
       document.documentElement.style.setProperty('--watermark-color', DEFAULT_THEME.wmColor);
     }
