@@ -38,6 +38,7 @@
       top: 0;
       left: 0;
       touch-action: none;
+      z-index: 5;
     }
 
     :root {
@@ -180,7 +181,7 @@
       justify-content: space-between;
       align-items: flex-end;
       pointer-events: none;
-      z-index: 2;
+      z-index: 1;
       user-select: none;
       -webkit-user-select: none;
       overflow: visible;
@@ -211,12 +212,12 @@
       align-items: center;
       gap: 6px;
       padding: 5px 6px;
-      background: rgba(140, 205, 235, 0.48);
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.55);
       border-radius: 9px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.6);
       z-index: 100;
       pointer-events: auto;
     }
@@ -227,20 +228,21 @@
       padding: 0;
       border-radius: 6px;
       border: 1px solid rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.28);
-      color: #1e293b;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--ui-fg, #1e293b);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
 
     .ctrl-btn:hover {
-      background: rgba(255, 255, 255, 0.68);
+      background: rgba(255, 255, 255, 0.52);
+      border-color: rgba(255, 255, 255, 0.75);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .ctrl-btn:active {
@@ -421,6 +423,12 @@
     </div>
   </div>
 
+  <!-- Bottom Background Watermark "APHEX TWIN" (rendered behind 3D cube) -->
+  <div class="watermark-overlay" aria-hidden="true">
+    <span class="wm-word wm-left">APHEX</span>
+    <span class="wm-word wm-right">TWIN</span>
+  </div>
+
   <div id="webgl-container"></div>
 
   <!-- Loading Screen -->
@@ -451,11 +459,6 @@
     </div>
   </div>
 
-  <!-- Bottom Background Watermark "APHEX TWIN" -->
-  <div class="watermark-overlay" aria-hidden="true">
-    <span class="wm-word wm-left">APHEX</span>
-    <span class="wm-word wm-right">TWIN</span>
-  </div>
 
   <!-- Bottom Center Controls -->
   <div class="bottom-controls">
