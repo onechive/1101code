@@ -670,7 +670,7 @@
       // 씬 생성
       scene = new THREE.Scene();
       scene.background = null;   // 투명 → body의 움직이는 그라데이션 배경이 보임
-      scene.fog = null;          // 멀리서 보아도 화면이 뿌옇게 흐려지지 않도록 포그 비활성화
+      scene.fog = new THREE.FogExp2(DEFAULT_THEME.bgColor.getHex(), 0.013);
 
       // 카메라 설정 (사용자 큐브 크기에 최적화된 위치)
       camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 200);
@@ -1472,6 +1472,16 @@
         ease: 'sine.inOut',
         overwrite: 'auto'
       });
+      if (scene && scene.fog) {
+        gsap.to(scene.fog.color, {
+          r: track.bgColor.r,
+          g: track.bgColor.g,
+          b: track.bgColor.b,
+          duration: 1.5,
+          ease: 'sine.inOut',
+          overwrite: 'auto'
+        });
+      }
       document.documentElement.style.setProperty('--theme-color', track.textColor);
       document.documentElement.style.setProperty('--watermark-color', track.wmColor);
     }
@@ -1501,6 +1511,16 @@
         ease: 'sine.inOut',
         overwrite: 'auto'
       });
+      if (scene && scene.fog) {
+        gsap.to(scene.fog.color, {
+          r: DEFAULT_THEME.bgColor.r,
+          g: DEFAULT_THEME.bgColor.g,
+          b: DEFAULT_THEME.bgColor.b,
+          duration: 1.5,
+          ease: 'sine.inOut',
+          overwrite: 'auto'
+        });
+      }
       document.documentElement.style.setProperty('--theme-color', DEFAULT_THEME.textColor);
       document.documentElement.style.setProperty('--watermark-color', DEFAULT_THEME.wmColor);
     }
@@ -2092,6 +2112,15 @@
       updateTrail(dt);
       updateBackground(dt);
       controls.update();
+
+      // 카메라 거리에 반비례하도록 포그 밀도를 동적 보정:
+      // - 기본 거리에서는 이전의 몽환적이고 부드러운 대기감(~17%)을 그대로 제공
+      // - 멀리 줌아웃해도 포그가 짙어지거나 화면이 뿌옇게 흐려지지 않고 동일한 부드러움을 유지
+      if (scene && scene.fog && controls) {
+        const camDist = camera.position.distanceTo(controls.target);
+        scene.fog.density = 0.42 / Math.max(camDist, 10);
+      }
+
       renderer.render(scene, camera);
     }
 
