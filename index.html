@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>3D Interactive Rubik's Cube | Original GLB Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <script>
     // 첫 방문 1회 노출 제어 (새로고침 시 인트로 비디오 오버레이 깜빡임 방지)
     if (sessionStorage.getItem('hasSeenIntro') === 'true') {
@@ -37,55 +40,211 @@
       touch-action: none;
     }
 
-    /* UI Overlay */
-    .ui-layer {
-      position: absolute;
+    :root {
+      --theme-color: #2a3441;
+      --watermark-color: rgba(180, 195, 215, 0.35);
+    }
+
+    /* Top Header Overlay */
+    .header-overlay {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      padding: 32px 42px;
+      display: grid;
+      grid-template-columns: 310px 1fr 410px;
+      align-items: start;
       pointer-events: none;
+      z-index: 50;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .aphex-logo {
+      width: 32px;
+      height: 32px;
+      background-color: var(--theme-color);
+      -webkit-mask: url('fbx/aphextwinlogo.png') no-repeat center / contain;
+      mask: url('fbx/aphextwinlogo.png') no-repeat center / contain;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background-color 0.8s ease;
+    }
+
+    .album-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .album-year {
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--theme-color);
+      transition: color 0.8s ease;
+    }
+
+    .album-title {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--theme-color);
+      margin-left: 2px;
+      transition: color 0.8s ease;
+      white-space: nowrap;
+    }
+
+    .header-center {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .header-center.empty {
+      opacity: 0;
+      transform: translateY(-4px);
+      pointer-events: none;
+    }
+
+    .track-tag {
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--theme-color);
+      border: 1.5px solid var(--theme-color);
+      padding: 4px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: color 0.8s ease, border-color 0.8s ease;
+    }
+
+    .track-keywords {
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--theme-color);
+      margin-left: 26px;
+      white-space: nowrap;
+      transition: color 0.8s ease;
+    }
+
+    .header-right {
       display: flex;
       justify-content: flex-end;
-      align-items: flex-start;
-      padding: 24px;
-      z-index: 10;
+      transition: opacity 0.45s ease, transform 0.45s ease;
     }
 
-    /* Actions / Buttons */
-    .controls-panel {
-      pointer-events: auto;
+    .header-right.empty {
+      opacity: 0;
+      transform: translateY(-4px);
+      pointer-events: none;
+    }
+
+    .track-description {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.48;
+      letter-spacing: 0.02em;
+      color: var(--theme-color);
+      max-width: 410px;
+      text-align: left;
+      transition: color 0.8s ease;
+    }
+
+    /* Bottom Watermark "APHEX TWIN" */
+    .watermark-overlay {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      width: 100%;
+      padding: 0 36px;
       display: flex;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+      -webkit-user-select: none;
+      overflow: hidden;
     }
 
-    .btn {
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(14px) saturate(160%);
-      -webkit-backdrop-filter: blur(14px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      color: var(--ui-fg, #1e293b);
-      width: 42px;
-      height: 42px;
+    .wm-word {
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 400;
+      font-size: clamp(65px, 13vw, 175px);
+      line-height: 0.85;
+      letter-spacing: 0.16em;
+      color: var(--watermark-color);
+      transform: scaleY(1.38);
+      transform-origin: bottom;
+      transition: color 1.2s ease;
+      white-space: nowrap;
+    }
+
+    /* Bottom Center Controls */
+    .bottom-controls {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 6px;
+      background: rgba(140, 205, 235, 0.48);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 9px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      z-index: 100;
+      pointer-events: auto;
+    }
+
+    .ctrl-btn {
+      width: 32px;
+      height: 32px;
       padding: 0;
-      border-radius: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.28);
+      color: #1e293b;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.35);
-      color: var(--ui-fg, #000000);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.68);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
     }
 
-    .btn:active {
+    .ctrl-btn:active {
       transform: translateY(0);
+    }
+
+    @media (max-width: 960px) {
+      .header-overlay {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 20px 24px;
+      }
+      .track-description {
+        max-width: 100%;
+      }
     }
 
     /* Loading Spinner */
@@ -247,33 +406,59 @@
     <div class="spinner"></div>
   </div>
 
-  <!-- UI Overlay -->
-  <div class="ui-layer">
-    <div class="controls-panel">
-      <button class="btn" id="btn-shuffle" aria-label="Shuffle">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 3 21 3 21 8"></polyline>
-          <line x1="4" y1="20" x2="21" y2="3"></line>
-          <polyline points="21 16 21 21 16 21"></polyline>
-          <line x1="15" y1="15" x2="21" y2="21"></line>
-          <line x1="4" y1="4" x2="9" y2="9"></line>
-        </svg>
-      </button>
-      <button class="btn" id="btn-reset" aria-label="Front view">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="3" y="3" width="5" height="5" rx="1"></rect>
-          <rect x="9.5" y="3" width="5" height="5" rx="1"></rect>
-          <rect x="16" y="3" width="5" height="5" rx="1"></rect>
-          <rect x="3" y="9.5" width="5" height="5" rx="1"></rect>
-          <rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
-          <rect x="16" y="9.5" width="5" height="5" rx="1"></rect>
-          <rect x="3" y="16" width="5" height="5" rx="1"></rect>
-          <rect x="9.5" y="16" width="5" height="5" rx="1"></rect>
-          <rect x="16" y="16" width="5" height="5" rx="1"></rect>
-        </svg>
-      </button>
+  <!-- Top Header Overlay -->
+  <div class="header-overlay">
+    <!-- Top Left: Logo + 1992 + Selected Ambient Works -->
+    <div class="header-left">
+      <div class="aphex-logo" title="Aphex Twin"></div>
+      <div class="album-info">
+        <div class="album-year">1992</div>
+        <div class="album-title">SELECTED AMBIENT WORKS 85–92</div>
+      </div>
     </div>
+
+    <!-- Top Center: Track title & keywords -->
+    <div class="header-center empty" id="header-center">
+      <div class="track-tag" id="track-title-tag"></div>
+      <div class="track-keywords" id="track-keywords-tag"></div>
+    </div>
+
+    <!-- Top Right: Track Description -->
+    <div class="header-right empty" id="header-right">
+      <p class="track-description" id="track-desc-text"></p>
+    </div>
+  </div>
+
+  <!-- Bottom Background Watermark "APHEX TWIN" -->
+  <div class="watermark-overlay" aria-hidden="true">
+    <span class="wm-word wm-left">APHEX</span>
+    <span class="wm-word wm-right">TWIN</span>
+  </div>
+
+  <!-- Bottom Center Controls -->
+  <div class="bottom-controls">
+    <button class="ctrl-btn" id="btn-shuffle" aria-label="Shuffle" title="큐브 섞기">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+    <button class="ctrl-btn" id="btn-reset" aria-label="Front view" title="정면 보기">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="3" y="3" width="5" height="5" rx="1"></rect>
+        <rect x="9.5" y="3" width="5" height="5" rx="1"></rect>
+        <rect x="16" y="3" width="5" height="5" rx="1"></rect>
+        <rect x="3" y="9.5" width="5" height="5" rx="1"></rect>
+        <rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+        <rect x="16" y="9.5" width="5" height="5" rx="1"></rect>
+        <rect x="3" y="16" width="5" height="5" rx="1"></rect>
+        <rect x="9.5" y="16" width="5" height="5" rx="1"></rect>
+        <rect x="16" y="16" width="5" height="5" rx="1"></rect>
+      </svg>
+    </button>
   </div>
 
   <!-- Three.js, OrbitControls, GLTFLoader, GSAP via CDN -->
@@ -294,22 +479,110 @@
       glbPath: 'fbx/cube1103+animation.glb',
       altTexturePath: 'fbx/uv+ap.png',   // 마우스가 지나갈 때 드러나는 텍스처 (UV 배치 동일)
       altBrightness: 1.3,                   // uv+ap.png 밝기 배율
-      // 정면에서 왼쪽 위 → 오른쪽 아래 순서(01~09)
-      songs: [
-        'fbx/01.Xtal.mp3',
-        'fbx/02.Tha.mp3',
-        'fbx/03.Pulsewidth.mp3',
-        'fbx/04.Ageispolis.mp3',
-        'fbx/05.I.mp3',
-        'fbx/06.GreenCalx.mp3',
-        'fbx/07.Wearethemusicmakers.mp3',
-        'fbx/08.Hedphelym.mp3',
-        'fbx/09.Actium.mp3'
-      ],
       snapDuration: 0.35,        // 90도 스냅 회전 애니메이션 시간 (초)
       snapEase: 'power2.out',    // GSAP 이징 커브
       dragThreshold: 6,          // 드래그 판정 픽셀 임계값
       cubeSpacing: 5.495         // 원본 GLB 모델의 큐브 조각 간 간격 (Blender 원본 단위)
+    };
+
+    // 9개 트랙 데이터 (1, 2, 3, 4, 5, 6, 8, 11, 12)
+    const TRACK_DATA = [
+      {
+        trackNo: '01',
+        title: 'XTAL',
+        keywords: 'AMBIENT / ELECTRONIC',
+        audio: 'fbx/01.Xtal.mp3',
+        description: 'Xtal’s dreamy, mechanical sounds and female humming inspired the concept “A Nightmare After Falling Asleep on Melatonin.” I envisioned a sunlit teenage girl\'s bedroom with distorted objects and proportions inspired by Alice in Wonderland, creating a dreamlike space that feels both familiar and unsettling.',
+        bgColor: new THREE.Color(0xf5d5df), // soft pink (ref 1)
+        textColor: '#632943',
+        wmColor: 'rgba(235, 140, 170, 0.45)'
+      },
+      {
+        trackNo: '02',
+        title: 'THA',
+        keywords: 'SUBMERGED / DOWNTEMPO',
+        audio: 'fbx/02.Tha.mp3',
+        description: 'Tha drifts through submerged sub-bass pulses and distant echoes, evoking a slow underwater current where time dilates and organic textures dissolve into ambient tranquility.',
+        bgColor: new THREE.Color(0xd7e5df),
+        textColor: '#244538',
+        wmColor: 'rgba(135, 180, 160, 0.45)'
+      },
+      {
+        trackNo: '03',
+        title: 'PULSEWIDTH',
+        keywords: 'ACID / MINIMAL',
+        audio: 'fbx/03.Pulsewidth.mp3',
+        description: 'Pulsewidth balances euphoric melodic synthesis with an undulating rhythm, capturing an early 90s techno nostalgia bathed in radiant analog warmth.',
+        bgColor: new THREE.Color(0xd2def5),
+        textColor: '#1e355c',
+        wmColor: 'rgba(125, 165, 235, 0.45)'
+      },
+      {
+        trackNo: '04',
+        title: 'AGEISPOLIS',
+        keywords: 'DOWNTEMPO / CHILL',
+        audio: 'fbx/04.Ageispolis.mp3',
+        description: 'Ageispolis weaves a hypnotic slow-tempo groove beneath soaring synth pads, evoking futuristic urban solitude illuminated by hazy neon reflections.',
+        bgColor: new THREE.Color(0xe6dbf5),
+        textColor: '#3d245c',
+        wmColor: 'rgba(175, 140, 230, 0.45)'
+      },
+      {
+        trackNo: '05',
+        title: 'I',
+        keywords: 'ETHEREAL / SERENE',
+        audio: 'fbx/05.I.mp3',
+        description: 'i is a delicate, beatless ambient interlude composed of gentle bell-like arpeggios that shimmer like fragile light refracting through morning glass.',
+        bgColor: new THREE.Color(0xe2edf5),
+        textColor: '#233847',
+        wmColor: 'rgba(150, 185, 215, 0.45)'
+      },
+      {
+        trackNo: '06',
+        title: 'GREENCALX',
+        keywords: 'AMBIENT / ELECTRONIC',
+        audio: 'fbx/06.GreenCalx.mp3',
+        description: 'Green Calx is a surreal interpretation of repetitive electronic beats and distorted synthesizer sounds. Colorful ball pits and melting jelly-like surfaces create a dreamlike space that blurs the line between reality and imagination',
+        bgColor: new THREE.Color(0x94d1dc), // cyan/teal (ref 2)
+        textColor: '#e5fc50', // bright acid lime (ref 2)
+        wmColor: 'rgba(120, 175, 205, 0.5)'
+      },
+      {
+        trackNo: '08',
+        title: 'WE ARE THE MUSIC MAKERS',
+        keywords: 'BREAKBEAT / GROOVY',
+        audio: 'fbx/07.Wearethemusicmakers.mp3',
+        description: 'We Are the Music Makers incorporates playful vocal fragments and bouncy rhythmic syncopation, building an infectious dance groove rooted in whimsical surrealism.',
+        bgColor: new THREE.Color(0xf5e3cd),
+        textColor: '#5a3515',
+        wmColor: 'rgba(230, 175, 130, 0.45)'
+      },
+      {
+        trackNo: '11',
+        title: 'HEDPHELYM',
+        keywords: 'DARK / HAUNTING',
+        audio: 'fbx/08.Hedphelym.mp3',
+        description: 'Hedphelym is characterized by cavernous reverb and shadowy industrial textures, creating a tense, suspenseful sonic landscape wrapped in subterranean mystery.',
+        bgColor: new THREE.Color(0xd7d2ce),
+        textColor: '#2d2826',
+        wmColor: 'rgba(160, 150, 145, 0.45)'
+      },
+      {
+        trackNo: '12',
+        title: 'ACTIUM',
+        keywords: 'CLIMACTIC / CINEMATIC',
+        audio: 'fbx/09.Actium.mp3',
+        description: 'Actium brings the journey to a cinematic close with crisp percussive layers, rich harmonies, and an emotional, melancholic atmosphere that resonates long after fading out.',
+        bgColor: new THREE.Color(0xced8e6),
+        textColor: '#202d3e',
+        wmColor: 'rgba(135, 160, 195, 0.45)'
+      }
+    ];
+
+    const DEFAULT_THEME = {
+      bgColor: new THREE.Color(0xeef2f7),
+      textColor: '#2a3441',
+      wmColor: 'rgba(180, 195, 215, 0.35)'
     };
 
     let scene, camera, renderer, controls;
@@ -399,6 +672,10 @@
 
       // 포인터 이벤트 리스너 등록
       setupPointerEvents(container);
+
+      // 초기 테마 및 트랙 정보 UI 초기화
+      applyDefaultTheme();
+      clearTrackInfoUI();
 
       // UI 버튼 이벤트 등록
       setupUIEvents();
@@ -836,7 +1113,6 @@
       gsap.to(hoverUniforms.uEnable, { value: on ? 1 : 0, duration: on ? 0.6 : 0.4, overwrite: true });
       if (!on) { trail.length = 0; lastHoverPoint = null; }
       frontMode = on;
-      if (!on) stopSong();   // 정면에서 벗어나면 노래 중단
     }
     let frontMode = false;
 
@@ -912,7 +1188,7 @@
                   float ripple = 1.0 - smoothstep(rr - 1.8, rr, dist);
                   selMask = max(selMask, inFace * ripple * uSelC[i].w);
                 }
-                mixAmt = max(mixAmt, selMask * uEnable);
+                mixAmt = max(mixAmt, selMask);
                 // 알파는 건드리지 않음 (투명 캔버스에서 텍스처 알파 때문에 비쳐 보이는 현상 방지)
                 diffuseColor.rgb *= mix(baseTexel, altTexel, mixAmt).rgb;
               `);
@@ -1106,16 +1382,110 @@
         cleanupTempPivot();
         dragSession.dragState = 'IDLE';
         controls.enabled = true;
-        // 정면 보기 상태에서 사진을 클릭하면 해당 노래 재생
-        if (wasClick && frontMode) handleTileClick(dragSession.startScreenPos.x, dragSession.startScreenPos.y);
+        // 클릭 시 해당 사진의 노래 재생 및 인터랙션 처리
+        if (wasClick) handleTileClick(dragSession.startScreenPos.x, dragSession.startScreenPos.y);
       }
     }
 
-    // --- 정면 보기에서 사진 클릭 → 사진 고정 + 노래 재생 + 배경색 변경 ---
+    // --- 트랙 선택 / 재생 / UI 연동 로직 ---
     let selectedIdx = -1;
     let selSlot = 0;
     let currentAudio = null;
     const audioCache = {};
+
+    function applyTheme(track) {
+      if (!track) return;
+      gsap.to(bgBase, {
+        r: track.bgColor.r,
+        g: track.bgColor.g,
+        b: track.bgColor.b,
+        duration: 1.4,
+        ease: 'sine.inOut',
+        overwrite: 'auto'
+      });
+      document.documentElement.style.setProperty('--theme-color', track.textColor);
+      document.documentElement.style.setProperty('--watermark-color', track.wmColor);
+    }
+
+    function applyDefaultTheme() {
+      gsap.to(bgBase, {
+        r: DEFAULT_THEME.bgColor.r,
+        g: DEFAULT_THEME.bgColor.g,
+        b: DEFAULT_THEME.bgColor.b,
+        duration: 1.4,
+        ease: 'sine.inOut',
+        overwrite: 'auto'
+      });
+      document.documentElement.style.setProperty('--theme-color', DEFAULT_THEME.textColor);
+      document.documentElement.style.setProperty('--watermark-color', DEFAULT_THEME.wmColor);
+    }
+
+    function updateTrackInfoUI(track) {
+      const centerEl = document.getElementById('header-center');
+      const rightEl = document.getElementById('header-right');
+      const titleTag = document.getElementById('track-title-tag');
+      const keywordsTag = document.getElementById('track-keywords-tag');
+      const descText = document.getElementById('track-desc-text');
+
+      if (titleTag) titleTag.textContent = `[ TRACK ${track.trackNo} / ${track.title} ]`;
+      if (keywordsTag) keywordsTag.textContent = `[ ${track.keywords} ]`;
+      if (descText) descText.textContent = track.description;
+
+      if (centerEl) centerEl.classList.remove('empty');
+      if (rightEl) rightEl.classList.remove('empty');
+    }
+
+    function clearTrackInfoUI() {
+      const centerEl = document.getElementById('header-center');
+      const rightEl = document.getElementById('header-right');
+      const titleTag = document.getElementById('track-title-tag');
+      const keywordsTag = document.getElementById('track-keywords-tag');
+      const descText = document.getElementById('track-desc-text');
+
+      if (centerEl) centerEl.classList.add('empty');
+      if (rightEl) rightEl.classList.add('empty');
+
+      setTimeout(() => {
+        if (centerEl && centerEl.classList.contains('empty')) {
+          if (titleTag) titleTag.textContent = '';
+          if (keywordsTag) keywordsTag.textContent = '';
+        }
+        if (rightEl && rightEl.classList.contains('empty')) {
+          if (descText) descText.textContent = '';
+        }
+      }, 450);
+    }
+
+    function selectTrack(idx, hit, center) {
+      selectedIdx = idx;
+      const track = TRACK_DATA[idx];
+      if (!track) return;
+
+      // 사진 고정 (이전 선택은 페이드 아웃, 새 선택은 클릭 지점에서 물결처럼 퍼짐)
+      const oldSlot = selSlot;
+      selSlot = 1 - selSlot;
+      const C = hoverUniforms.uSelC.value;
+      const P = hoverUniforms.uSelP.value;
+      gsap.to(C[oldSlot], { w: 0, duration: 0.6, overwrite: true });
+      C[selSlot].set(hit.point.x, center.y, center.z, 1);
+      P[selSlot].set(hit.point.x, hit.point.y, hit.point.z, 0);
+      gsap.to(P[selSlot], { w: 8, duration: 1.2, ease: 'power2.out', overwrite: true });
+
+      playSong(idx);
+      applyTheme(track);
+      updateTrackInfoUI(track);
+    }
+
+    function deselectTrack() {
+      selectedIdx = -1;
+      const C = hoverUniforms.uSelC.value;
+      gsap.to(C[0], { w: 0, duration: 0.6, overwrite: true });
+      gsap.to(C[1], { w: 0, duration: 0.6, overwrite: true });
+
+      stopSong();
+      applyDefaultTheme();
+      clearTrackInfoUI();
+    }
 
     function handleTileClick(clientX, clientY) {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -1140,36 +1510,45 @@
       const col = 1 - Math.round(center.z / CONFIG.cubeSpacing);
       if (row < 0 || row > 2 || col < 0 || col > 2) return;
       const idx = row * 3 + col;
+
       if (idx === selectedIdx) {
-        // 같은 사진을 다시 클릭하면 노래 중단 / 다시 클릭하면 재생
-        if (currentAudio) stopSong(); else playSong(idx);
+        // 이미 재생 중인 사진을 다시 클릭하면: 노래 중단 + 선택 해제 + 기본 화면/배경으로 복귀
+        deselectTrack();
         return;
       }
-      selectedIdx = idx;
 
-      // 사진 고정 (이전 선택은 페이드 아웃, 새 선택은 클릭 지점에서 물결처럼 퍼짐)
-      const oldSlot = selSlot;
-      selSlot = 1 - selSlot;
-      const C = hoverUniforms.uSelC.value;
-      const P = hoverUniforms.uSelP.value;
-      gsap.to(C[oldSlot], { w: 0, duration: 0.6, overwrite: true });
-      C[selSlot].set(hit.point.x, center.y, center.z, 1);
-      P[selSlot].set(hit.point.x, hit.point.y, hit.point.z, 0);
-      gsap.to(P[selSlot], { w: 8, duration: 1.2, ease: 'power2.out', overwrite: true });
-
-      playSong(idx);
-      setBackgroundFromTile(hit.uv);
+      selectTrack(idx, hit, center);
     }
 
     function playSong(idx) {
       if (currentAudio) {
         const old = currentAudio;
-        gsap.to(old, { volume: 0, duration: 0.5, overwrite: true, onComplete: () => { if (old !== currentAudio) old.pause(); } });
+        gsap.to(old, {
+          volume: 0,
+          duration: 0.5,
+          overwrite: true,
+          onComplete: () => {
+            if (old !== currentAudio) {
+              old.pause();
+              old.currentTime = 0;
+            }
+          }
+        });
       }
-      const a = audioCache[idx] || (audioCache[idx] = new Audio(CONFIG.songs[idx]));
+      const track = TRACK_DATA[idx];
+      if (!track) return;
+
+      let a = audioCache[idx];
+      if (!a) {
+        a = new Audio(track.audio);
+        a.addEventListener('ended', () => {
+          if (selectedIdx === idx) deselectTrack();
+        });
+        audioCache[idx] = a;
+      }
       a.currentTime = 0;
       a.volume = 0;
-      a.play().catch(() => { });
+      a.play().catch(() => {});
       gsap.to(a, { volume: 1, duration: 0.9, overwrite: true });
       currentAudio = a;
     }
@@ -1178,61 +1557,36 @@
       if (!currentAudio) return;
       const old = currentAudio;
       currentAudio = null;
-      gsap.to(old, { volume: 0, duration: 0.4, overwrite: true, onComplete: () => { if (old !== currentAudio) old.pause(); } });
-    }
-
-    // 선택한 사진의 대표 색상 추출
-    function sampleTileColor(uv) {
-      try {
-        const img = hoverUniforms.uAltMap.value.image;
-        const W = img.naturalWidth || img.width, H = img.naturalHeight || img.height;
-        const span = 0.02;
-        const size = 24;
-        const cv = document.createElement('canvas');
-        cv.width = cv.height = size;
-        const ctx = cv.getContext('2d', { willReadFrequently: true });
-        ctx.drawImage(img, (uv.x - span) * W, (uv.y - span) * H, span * 2 * W, span * 2 * H, 0, 0, size, size);
-        const d = ctx.getImageData(0, 0, size, size).data;
-        let r = 0, g = 0, b = 0, wsum = 0;
-        for (let i = 0; i < d.length; i += 4) {
-          if (d[i + 3] < 128 || d[i] + d[i + 1] + d[i + 2] > 730) continue; // 투명/흰 배경 제외
-          const mx = Math.max(d[i], d[i + 1], d[i + 2]), mn = Math.min(d[i], d[i + 1], d[i + 2]);
-          const w = 0.3 + (mx - mn) / 255;                                   // 채도 높은 픽셀 가중
-          r += d[i] * w; g += d[i + 1] * w; b += d[i + 2] * w; wsum += w;
+      gsap.to(old, {
+        volume: 0,
+        duration: 0.4,
+        overwrite: true,
+        onComplete: () => {
+          if (old !== currentAudio) {
+            old.pause();
+            old.currentTime = 0;
+          }
         }
-        if (wsum === 0) return new THREE.Color(0xcccccc);
-        return new THREE.Color().setRGB(r / wsum / 255, g / wsum / 255, b / wsum / 255, THREE.SRGBColorSpace);
-      } catch (e) {
-        return new THREE.Color(0xcccccc);
-      }
+      });
     }
 
     // --- 움직이는 그라데이션 배경 ---
-    const bgBase = new THREE.Color(0xffffff);   // 현재(트윈 중) 배경 기준색
+    const bgBase = DEFAULT_THEME.bgColor.clone();   // 현재(트윈 중) 배경 기준색
     let bgTime = 0;
-
-    function setBackgroundFromTile(uv) {
-      const c = sampleTileColor(uv);
-      gsap.to(bgBase, { r: c.r, g: c.g, b: c.b, duration: 1.8, ease: 'sine.inOut', overwrite: true });
-    }
 
     function updateBackground(dt) {
       bgTime += dt;
       const hsl = {};
       bgBase.getHSL(hsl);
-      const mk = (dh, dl) => new THREE.Color().setHSL((hsl.h + dh + 1) % 1, hsl.s, Math.min(0.97, Math.max(0, hsl.l + dl)));
+      const mk = (dh, dl) => new THREE.Color().setHSL((hsl.h + dh + 1) % 1, Math.min(1, hsl.s * 1.15), Math.min(0.96, Math.max(0.08, hsl.l + dl)));
       const css = (c) => '#' + c.getHexString();
-      const c1 = css(bgBase), c2 = css(mk(0.07, 0.10)), c3 = css(mk(-0.06, 0.2));
+      const c1 = css(bgBase), c2 = css(mk(0.04, 0.08)), c3 = css(mk(-0.04, 0.14));
 
       const x1 = 50 + 38 * Math.sin(bgTime * 0.35), y1 = 50 + 32 * Math.cos(bgTime * 0.28);
       const x2 = 50 + 40 * Math.cos(bgTime * 0.23 + 1.3), y2 = 50 + 36 * Math.sin(bgTime * 0.31 + 0.7);
       document.body.style.background =
-        `radial-gradient(circle at ${x1}% ${y1}%, ${c3} 0%, transparent 55%), ` +
-        `radial-gradient(circle at ${x2}% ${y2}%, ${c2} 0%, transparent 60%), ${c1}`;
-
-      // 배경이 어두우면 버튼 아이콘을 밝게
-      const lum = 0.299 * bgBase.r + 0.587 * bgBase.g + 0.114 * bgBase.b;
-      document.documentElement.style.setProperty('--ui-fg', lum < 0.45 ? '#ffffff' : '#1e293b');
+        `radial-gradient(circle at ${x1}% ${y1}%, ${c3} 0%, transparent 60%), ` +
+        `radial-gradient(circle at ${x2}% ${y2}%, ${c2} 0%, transparent 65%), ${c1}`;
     }
 
     /**
