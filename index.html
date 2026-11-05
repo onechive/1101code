@@ -51,10 +51,10 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 32px 42px;
-      display: grid;
-      grid-template-columns: 310px 1fr 410px;
-      align-items: start;
+      padding: 34px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       pointer-events: none;
       z-index: 50;
       font-family: 'Roboto Mono', monospace;
@@ -63,12 +63,13 @@
     .header-left {
       display: flex;
       align-items: flex-start;
-      gap: 16px;
+      gap: 14px;
+      flex-shrink: 0;
     }
 
     .aphex-logo {
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       background-color: var(--theme-color);
       -webkit-mask: url('fbx/aphextwinlogo.png') no-repeat center / contain;
       mask: url('fbx/aphextwinlogo.png') no-repeat center / contain;
@@ -80,66 +81,75 @@
     .album-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
 
     .album-year {
-      font-size: 19px;
+      font-size: 13.5px;
       font-weight: 400;
       letter-spacing: 0.08em;
       color: var(--theme-color);
+      line-height: 1.25;
       transition: color 0.8s ease;
     }
 
     .album-title {
-      font-size: 16px;
+      font-size: 11.5px;
       font-weight: 400;
       letter-spacing: 0.04em;
       color: var(--theme-color);
-      margin-left: 2px;
+      margin-left: 6px;
+      line-height: 1.25;
       transition: color 0.8s ease;
       white-space: nowrap;
     }
 
     .header-center {
+      position: absolute;
+      left: calc(50% - 180px);
+      top: 34px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
+      gap: 5px;
       transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
     }
 
     .header-center.empty {
       opacity: 0;
       transform: translateY(-4px);
-      pointer-events: none;
     }
 
     .track-tag {
-      font-size: 19px;
+      font-size: 13.5px;
       font-weight: 400;
       letter-spacing: 0.08em;
       color: var(--theme-color);
-      border: 1.5px solid var(--theme-color);
-      padding: 4px 10px;
-      border-radius: 4px;
+      border: none;
+      padding: 0;
+      margin: 0;
       white-space: nowrap;
-      transition: color 0.8s ease, border-color 0.8s ease;
+      line-height: 1.25;
+      transition: color 0.8s ease;
     }
 
     .track-keywords {
-      font-size: 17px;
+      font-size: 11.5px;
       font-weight: 400;
       letter-spacing: 0.08em;
       color: var(--theme-color);
-      margin-left: 26px;
+      margin-left: 24px;
       white-space: nowrap;
+      line-height: 1.25;
       transition: color 0.8s ease;
     }
 
     .header-right {
       display: flex;
       justify-content: flex-end;
+      margin-left: auto;
+      max-width: 410px;
       transition: opacity 0.45s ease, transform 0.45s ease;
     }
 
@@ -151,11 +161,10 @@
 
     .track-description {
       margin: 0;
-      font-size: 13.5px;
-      line-height: 1.48;
+      font-size: 11.5px;
+      line-height: 1.5;
       letter-spacing: 0.02em;
       color: var(--theme-color);
-      max-width: 410px;
       text-align: left;
       transition: color 0.8s ease;
     }
@@ -166,7 +175,7 @@
       bottom: 24px;
       left: 0;
       width: 100%;
-      padding: 0 36px;
+      padding: 0 44px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -174,20 +183,22 @@
       z-index: 2;
       user-select: none;
       -webkit-user-select: none;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .wm-word {
       font-family: 'Roboto Mono', monospace;
       font-weight: 400;
-      font-size: clamp(65px, 13vw, 175px);
-      line-height: 0.85;
+      font-size: clamp(60px, 12vw, 155px);
+      line-height: 1.0;
       letter-spacing: 0.16em;
       color: var(--watermark-color);
-      transform: scaleY(1.38);
+      transform: scaleY(1.32);
       transform-origin: bottom;
       transition: color 1.2s ease;
       white-space: nowrap;
+      display: inline-block;
+      overflow: visible;
     }
 
     /* Bottom Center Controls */
@@ -238,9 +249,20 @@
 
     @media (max-width: 960px) {
       .header-overlay {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 16px;
         padding: 20px 24px;
+      }
+      .header-center {
+        position: static;
+        transform: none;
+      }
+      .header-center.empty {
+        transform: translateY(-4px);
+      }
+      .header-right {
+        margin-left: 0;
+        max-width: 100%;
       }
       .track-description {
         max-width: 100%;
