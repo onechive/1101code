@@ -518,7 +518,7 @@
       cubeSpacing: 5.495         // 원본 GLB 모델의 큐브 조각 간 간격 (Blender 원본 단위)
     };
 
-    // 9개 트랙 데이터 (1, 2, 3, 4, 5, 6, 8, 11, 12)
+    // 9개 트랙 데이터 (1: Xtal, 2: Tha, 3: Pulsewidth, 4: Green Calx, 5: Ageispolis, 6: We Are the Music Makers, 7: i, 8: Actium, 9: Hedphelym)
     const TRACK_DATA = [
       {
         trackNo: '01',
@@ -557,30 +557,6 @@
         wmColor: 'rgba(100, 150, 220, 0.42)'
       },
       {
-        trackNo: '04',
-        title: 'AGEISPOLIS',
-        keywords: 'DOWNTEMPO / CHILL',
-        audio: 'fbx/04.Ageispolis.mp3',
-        description: 'Ageispolis is a surreal interpretation of deep basslines, repetitive electronic beats, and atmospheric synthesizer melodies. Glowing neon cables and a retro arcade machine create a dreamlike digital space where rhythm and electricity seem to flow together.',
-        bgColor: new THREE.Color(0xd98f68), // 차분하고 부드러운 피치 살구 앰버
-        orb1: new THREE.Color(0xe07f50),    // 은은한 웜 코랄 앰버
-        orb2: new THREE.Color(0xf7caa8),    // 회전하는 크리미 피치 오라
-        textColor: '#361608',
-        wmColor: 'rgba(215, 130, 85, 0.4)'
-      },
-      {
-        trackNo: '05',
-        title: 'I',
-        keywords: 'ETHEREAL / SERENE',
-        audio: 'fbx/05.I.mp3',
-        description: 'i evokes a sleepless night filled with restless thoughts, contrasting a quiet room with the sounds of traffic and glowing city advertisements. I envisioned a dark, futuristic cityscape filled with towering buildings and bright neon lights, blending cold dawn air with a city-pop aesthetic and a subtle sci-fi atmosphere.',
-        bgColor: new THREE.Color(0x121e33), // 깊고 차분한 미드나잇 블루
-        orb1: new THREE.Color(0x1ad980),    // 회전하는 눈이 편안한 에메랄드 네온 오라
-        orb2: new THREE.Color(0x15b399),    // 몽환적인 소프트 틸 그린
-        textColor: '#42f587',
-        wmColor: 'rgba(26, 217, 128, 0.35)'
-      },
-      {
         trackNo: '06',
         title: 'GREENCALX',
         keywords: 'AMBIENT / ELECTRONIC',
@@ -591,6 +567,18 @@
         orb2: new THREE.Color(0x7cbcd1),    // 은은한 아침 시안 안개
         textColor: '#e5fc50',
         wmColor: 'rgba(110, 185, 210, 0.42)'
+      },
+      {
+        trackNo: '04',
+        title: 'AGEISPOLIS',
+        keywords: 'DOWNTEMPO / CHILL',
+        audio: 'fbx/04.Ageispolis.mp3',
+        description: 'Ageispolis is a surreal interpretation of deep basslines, repetitive electronic beats, and atmospheric synthesizer melodies. Glowing neon cables and a retro arcade machine create a dreamlike digital space where rhythm and electricity seem to flow together.',
+        bgColor: new THREE.Color(0xd98f68), // 차분하고 부드러운 피치 살구 앰버
+        orb1: new THREE.Color(0xe07f50),    // 은은한 웜 코랄 앰버
+        orb2: new THREE.Color(0xf7caa8),    // 회전하는 크리미 피치 오라
+        textColor: '#361608',
+        wmColor: 'rgba(215, 130, 85, 0.4)'
       },
       {
         trackNo: '08',
@@ -605,16 +593,16 @@
         wmColor: 'rgba(170, 115, 100, 0.4)'
       },
       {
-        trackNo: '11',
-        title: 'HEDPHELYM',
-        keywords: 'DARK / HAUNTING',
-        audio: 'fbx/08.Hedphelym.mp3',
-        description: 'The eerie atmosphere and pounding rhythm inspired the concept of “Something Lurking in the Dark.” I envisioned a mysterious world where an unknown entity is chasing someone. The repetitive beats resemble a racing heartbeat, while dissonant sounds evoke a strange, alien presence, creating a dark and unsettling atmosphere.',
-        bgColor: new THREE.Color(0x535861), // 차분하고 정제된 슬레이트 그레이
-        orb1: new THREE.Color(0xf2f4f8),    // 회전하는 부드러운 밀키 화이트 미스트
-        orb2: new THREE.Color(0x363a40),    // 은은한 차콜 섀도우
-        textColor: '#ffffff',
-        wmColor: 'rgba(255, 255, 255, 0.35)'
+        trackNo: '05',
+        title: 'I',
+        keywords: 'ETHEREAL / SERENE',
+        audio: 'fbx/05.I.mp3',
+        description: 'i evokes a sleepless night filled with restless thoughts, contrasting a quiet room with the sounds of traffic and glowing city advertisements. I envisioned a dark, futuristic cityscape filled with towering buildings and bright neon lights, blending cold dawn air with a city-pop aesthetic and a subtle sci-fi atmosphere.',
+        bgColor: new THREE.Color(0x121e33), // 깊고 차분한 미드나잇 블루
+        orb1: new THREE.Color(0x1ad980),    // 회전하는 눈이 편안한 에메랄드 네온 오라
+        orb2: new THREE.Color(0x15b399),    // 몽환적인 소프트 틸 그린
+        textColor: '#42f587',
+        wmColor: 'rgba(26, 217, 128, 0.35)'
       },
       {
         trackNo: '12',
@@ -627,6 +615,18 @@
         orb2: new THREE.Color(0x82c4aa),    // 은은한 소프트 제이드 오라
         textColor: '#a7f3d0',
         wmColor: 'rgba(72, 148, 119, 0.4)'
+      },
+      {
+        trackNo: '11',
+        title: 'HEDPHELYM',
+        keywords: 'DARK / HAUNTING',
+        audio: 'fbx/08.Hedphelym.mp3',
+        description: 'The eerie atmosphere and pounding rhythm inspired the concept of “Something Lurking in the Dark.” I envisioned a mysterious world where an unknown entity is chasing someone. The repetitive beats resemble a racing heartbeat, while dissonant sounds evoke a strange, alien presence, creating a dark and unsettling atmosphere.',
+        bgColor: new THREE.Color(0x535861), // 차분하고 정제된 슬레이트 그레이
+        orb1: new THREE.Color(0xf2f4f8),    // 회전하는 부드러운 밀키 화이트 미스트
+        orb2: new THREE.Color(0x363a40),    // 은은한 차콜 섀도우
+        textColor: '#ffffff',
+        wmColor: 'rgba(255, 255, 255, 0.35)'
       }
     ];
 
